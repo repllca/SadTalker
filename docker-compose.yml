@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  sadtalker:
-    image: wawa9000/sadtalker
-    container_name: sadtalker
+  sadtalker-api:
+    build: .
+    container_name: sadtalker-api
     runtime: nvidia
     deploy:
       resources:
@@ -11,11 +11,8 @@ services:
           devices:
             - capabilities: [gpu]
     ports:
-      - "10364:10364"
+      - "10364:8000"  # ホスト10364 → コンテナ8000
     volumes:
-      - ./checkpoints:/SadTalker/checkpoints
-      - ./gfpgan/weights:/SadTalker/gfpgan/weights
-      - ./results:/SadTalker/results
-    entrypoint: /bin/bash
+      - ./:/SadTalker_copy  # プロジェクト全体をマウント
     stdin_open: true
     tty: true
